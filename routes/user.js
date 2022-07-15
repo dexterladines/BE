@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const controller = require("../controllers/users");
 const User = require("../models/User");
 const {
   verifyToken,
@@ -9,6 +9,14 @@ const {
 
 
 // //UPDATE
+
+router.get("/profile/", verifyToken, (req, res) => {
+	controller
+		.getProfile(req.user.id)
+		.then((result) => res.send(result))
+		.catch((err) => res.send(err.message));
+});
+
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
