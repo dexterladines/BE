@@ -1,18 +1,22 @@
 const express = require("express");
 const app = express();
+
+
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
+const nodemailer = require("nodemailer");
 // const stripeRoute = require("./routes/stripe");
 const cors = require("cors");
 const auth = require("./routes/auth");
 
 dotenv.config();
-
+const PORT = process.env.PORT;
 const Product = require("./models/Product");
 
 mongoose
@@ -31,6 +35,11 @@ app.use("/api/products", productRoute);
 app.use("/api/carts", cartRoute);
 app.use("/api/orders", orderRoute);
 // app.use("/api/checkout", stripeRoute);
+
+
+
+
+
 app.get('/', (req, res) => {
     res.send('Welcome to our API')
 });
@@ -49,6 +58,29 @@ app.get('/search/:key', async (req, res) => {
 	res.send(data);
 })
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Backend server is running!");
+// let mailTransporter = nodemailer.createTransport({
+// 	service: "gmail",
+// 	auth: {
+// 		user: "dexladines@gmail.com",
+// 		pass: "perote143"
+// 	}
+// })
+
+// let details = {
+// 	from: "dexladines@gmail.com",
+// 	to: "drexladines@gmail.com",
+// 	subject: "Testing our nodemailer",
+// 	text: "Test"
+// }
+
+// mailTransporter.sendMail(details, (err)=> {
+// 	if(err){
+// 		console.log("It has error")
+// 	} else {
+// 		console.log("Email has sent")
+// 	}
+// })
+
+app.listen(process.env.PORT || 4000, () => {
+  console.log(`Server is running on port : ${PORT}`);
 });
